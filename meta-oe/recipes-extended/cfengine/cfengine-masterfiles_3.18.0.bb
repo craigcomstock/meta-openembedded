@@ -18,13 +18,12 @@ or wherever `$(sys.masterdir)` points. \
 HOMEPAGE = "http://cfengine.com"
 
 LICENSE = "MIT"
-LIC_FILES_CHKSUM = "file://LICENSE;md5=9f76426f9ef8c6f6739fadd21d817a4f"
+LIC_FILES_CHKSUM = "file://LICENSE;md5=883f508f655e3b91091d85af3dc1e040"
 
 SRC_URI = "https://cfengine-package-repos.s3.amazonaws.com/tarballs/${BP}.tar.gz \
-           file://python3.patch \
            "
-SRC_URI[md5sum] = "6d456fdd9bd24ff6617eeaa05efae602"
-SRC_URI[sha256sum] = "4a071c0c4ba7df9bad93144cff5fbc0566e5172afd66201072e3193b76c55a38"
+SRC_URI[md5sum] = "5df2f85c75efc351ffadebcc11046a98"
+SRC_URI[sha256sum] = "968faee4920936739f914b5fcae441cd03354e909bb26c5dcdeb6750f1fde156"
 
 inherit autotools
 

@@ -17,9 +17,10 @@ DEPENDS = "attr tokyocabinet bison-native"
 
 SRC_URI = "https://cfengine-package-repos.s3.amazonaws.com/tarballs/${BP}.tar.gz \
            file://set-path-of-default-config-file.patch \
+           file://dbm_tokyocab.patch \
            "
-SRC_URI[md5sum] = "d4dabfa46d8afa151be5610f184354e7"
-SRC_URI[sha256sum] = "fa53e137f850eb268a8e7ae4578b5db5dc383656341f5053dc1a353ed0288265"
+SRC_URI[md5sum] = "4b82d3cccd56efddcba5f27f53c7e34d"
+SRC_URI[sha256sum] = "d601a3af30f3fba7d51a37476c9e1a00b750682149bf96f4a0002e804bc87783"
 
 inherit autotools-brokensep systemd
 
