@@ -10,26 +10,29 @@ its lifecycle. CFEngine takes systems from Build to Deploy, Manage and Audit."
 
 HOMEPAGE = "http://cfengine.com"
 
-LICENSE = "GPLv3"
+
+LICENSE = "GPL-3.0-only"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=233aa25e53983237cf0bd4c238af255f"
 
-DEPENDS = "attr tokyocabinet bison-native"
+DEPENDS += "attr tokyocabinet bison-native libxml2"
+#RDEPENDS:cfengine += "attr tokyocabinet bison-native libxml2"
 
-SRC_URI = "https://cfengine-package-repos.s3.amazonaws.com/tarballs/${BP}.tar.gz \
+SRC_URI = "https://cfengine-package-repos.s3.amazonaws.com/tarballs/${BPN}-community-${PV}.tar.gz \
+           file://0001-Fixed-with-libxml2-no-case-in-configure.ac.patch \
            file://set-path-of-default-config-file.patch \
            "
-SRC_URI[md5sum] = "d4dabfa46d8afa151be5610f184354e7"
-SRC_URI[sha256sum] = "fa53e137f850eb268a8e7ae4578b5db5dc383656341f5053dc1a353ed0288265"
+#SRC_URI[md5sum] = "5318e40702bc66a3ece44ec4ad77712b"
+SRC_URI[sha256sum] = "911778ddb0a4e03a3ddfc8fc0f033136e1551849ea2dcbdb3f0f14359dfe3126"
 
 inherit autotools-brokensep systemd
 
 export EXPLICIT_VERSION="${PV}"
 
-SYSTEMD_SERVICE_${PN} = "cfengine3.service cf-apache.service cf-hub.service cf-postgres.service \
+SYSTEMD_SERVICE:${PN} = "cfengine3.service cf-apache.service cf-hub.service cf-postgres.service \
                          cf-runalerts.service cf-execd.service \
                          cf-monitord.service  cf-serverd.service \
 "
-SYSTEMD_AUTO_ENABLE_${PN} = "disable"
+SYSTEMD_AUTO_ENABLE:${PN} = "disable"
 
 PACKAGECONFIG ??= "libpcre openssl \
                    ${@bb.utils.filter('DISTRO_FEATURES', 'pam systemd', d)} \
@@ -48,7 +51,7 @@ PACKAGECONFIG[libcurl] = "--with-libcurl,--without-libcurl,curl,"
 
 EXTRA_OECONF = "hw_cv_func_va_copy=yes --with-init-script=${sysconfdir}/init.d --with-tokyocabinet"
 
-do_install_append() {
+do_install:append() {
     install -d ${D}${localstatedir}/${BPN}/bin
     for f in `ls ${D}${bindir}`; do
         ln -s ${bindir}/`basename $f` ${D}${localstatedir}/${BPN}/bin/
@@ -69,4 +72,4 @@ EOF
     rm -rf ${D}${datadir}/cfengine/modules/packages/zypper
 }
 
-RDEPENDS_${PN} += "${BPN}-masterfiles"
+RDEPENDS:${PN} += "${BPN}-masterfiles"
