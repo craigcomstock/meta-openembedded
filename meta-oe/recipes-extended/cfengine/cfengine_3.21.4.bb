@@ -14,7 +14,7 @@ HOMEPAGE = "http://cfengine.com"
 LICENSE = "GPL-3.0-only"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=233aa25e53983237cf0bd4c238af255f"
 
-DEPENDS += "attr tokyocabinet bison-native libxml2"
+DEPENDS += "attr lmdb bison-native libxml2"
 #RDEPENDS:cfengine += "attr tokyocabinet bison-native libxml2"
 
 SRC_URI = "https://cfengine-package-repos.s3.amazonaws.com/tarballs/${BPN}-community-${PV}.tar.gz \
@@ -48,7 +48,7 @@ PACKAGECONFIG[libyaml] = "--with-libyaml,--without-libyaml,libyaml,"
 PACKAGECONFIG[systemd] = "--with-systemd-service=${systemd_system_unitdir},--without-systemd-service"
 PACKAGECONFIG[libcurl] = "--with-libcurl,--without-libcurl,curl,"
 
-EXTRA_OECONF = "hw_cv_func_va_copy=yes --with-init-script=${sysconfdir}/init.d --with-tokyocabinet --prefix=${localstatedir}/${BPN} --bindir=/var/cfengine/bin --libdir=/var/cfengine/lib"
+EXTRA_OECONF = "hw_cv_func_va_copy=yes --with-init-script=${sysconfdir}/init.d --with-lmdb --prefix=${localstatedir}/${BPN} --bindir=/var/cfengine/bin --libdir=/var/cfengine/lib"
 
 do_install:append() {
 #    install -d ${D}${localstatedir}/${BPN}/bin
