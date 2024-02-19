@@ -48,7 +48,7 @@ PACKAGECONFIG[libyaml] = "--with-libyaml,--without-libyaml,libyaml,"
 PACKAGECONFIG[systemd] = "--with-systemd-service=${systemd_system_unitdir},--without-systemd-service"
 PACKAGECONFIG[libcurl] = "--with-libcurl,--without-libcurl,curl,"
 
-EXTRA_OECONF = "hw_cv_func_va_copy=yes --with-init-script=${sysconfdir}/init.d --with-lmdb --prefix=${localstatedir}/${BPN} --bindir=/var/cfengine/bin --libdir=/var/cfengine/lib"
+EXTRA_OECONF = "hw_cv_func_va_copy=yes --with-init-script=${sysconfdir}/init.d --with-lmdb --without-tokyocabinet --prefix=${localstatedir}/${BPN} --bindir=/var/cfengine/bin --libdir=/var/cfengine/lib"
 
 do_install:append() {
 #    install -d ${D}${localstatedir}/${BPN}/bin
