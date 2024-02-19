@@ -23,18 +23,18 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=bb843e794feb6890f7697637b461c36e"
 SRC_URI = "https://cfengine-package-repos.s3.amazonaws.com/tarballs/${BP}.tar.gz \
            "
 #SRC_URI[md5sum] = "5df2f85c75efc351ffadebcc11046a98"
-SRC_URI[sha256sum] = "013ebe68599915cedb4bf753b471713d91901a991623358b9a967d9a779bcc16"
+SRC_URI[sha256sum] = "f5bd1079a1514472e6209ca1438a271a7e26087198594fcb32e434d7a08e7460"
 
 inherit autotools
 
 export EXPLICIT_VERSION="${PV}"
 
-EXTRA_OECONF = "--prefix=${datadir}/cfengine"
+EXTRA_OECONF = "--prefix=${D}${localstatedir}/cfengine"
 
 do_install:append() {
-    rm -rf ${D}${datadir}/cfengine/modules/packages/zypper ${D}${datadir}/cfengine/modules/packages/yum
+    rm -rf ${D}${localstatedir}/cfengine/modules/packages/zypper ${D}${localstatedir}/cfengine/modules/packages/yum
 }
 
-FILES:${PN} = "${datadir}/cfengine"
+FILES:${PN} = "${localstatedir}/cfengine/masterfiles ${localstatedir}/cfengine/masterfiles/**/*"
 
 RDEPENDS:${PN} += "python3-core"

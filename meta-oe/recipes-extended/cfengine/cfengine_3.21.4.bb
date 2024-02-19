@@ -18,11 +18,10 @@ DEPENDS += "attr tokyocabinet bison-native libxml2"
 #RDEPENDS:cfengine += "attr tokyocabinet bison-native libxml2"
 
 SRC_URI = "https://cfengine-package-repos.s3.amazonaws.com/tarballs/${BPN}-community-${PV}.tar.gz \
-           file://0001-Fixed-with-libxml2-no-case-in-configure.ac.patch \
            file://set-path-of-default-config-file.patch \
            "
 #SRC_URI[md5sum] = "5318e40702bc66a3ece44ec4ad77712b"
-SRC_URI[sha256sum] = "911778ddb0a4e03a3ddfc8fc0f033136e1551849ea2dcbdb3f0f14359dfe3126"
+SRC_URI[sha256sum] = "8fe416784af1532ab3e5414d08a7f5c329174bdcb50c31f4ac52afab3a338a0a"
 
 inherit autotools-brokensep systemd
 
@@ -49,14 +48,16 @@ PACKAGECONFIG[libyaml] = "--with-libyaml,--without-libyaml,libyaml,"
 PACKAGECONFIG[systemd] = "--with-systemd-service=${systemd_system_unitdir},--without-systemd-service"
 PACKAGECONFIG[libcurl] = "--with-libcurl,--without-libcurl,curl,"
 
-EXTRA_OECONF = "hw_cv_func_va_copy=yes --with-init-script=${sysconfdir}/init.d --with-tokyocabinet"
+EXTRA_OECONF = "hw_cv_func_va_copy=yes --with-init-script=${sysconfdir}/init.d --with-tokyocabinet --prefix=${localstatedir}/${BPN}"
 
 do_install:append() {
-    install -d ${D}${localstatedir}/${BPN}/bin
-    for f in `ls ${D}${bindir}`; do
-        ln -s ${bindir}/`basename $f` ${D}${localstatedir}/${BPN}/bin/
-    done
+#    install -d ${D}${localstatedir}/${BPN}/bin
+#    for f in `ls ${D}${bindir}`; do
+#        ln -s ${bindir}/`basename $f` ${D}${localstatedir}/${BPN}/bin/
+#    done
 
+#    rm ${D}${localstatedir}/${BPN}/share/doc/cfengine/examples/remake_outputs.pl
+    rm -rf ${D}${localstatedir}/${BPN}/share/doc/cfengine/examples
     install -d ${D}${sysconfdir}/default
     cat << EOF > ${D}${sysconfdir}/default/cfengine3
 RUN_CF_SERVERD=1
@@ -69,7 +70,9 @@ EOF
         install -m 0755 -D ${D}${sysconfdir}/init.d/cfengine3 ${D}${datadir}/${BPN}/cfengine3
         sed -i -e 's#/etc/init.d#${datadir}/${BPN}#' ${D}${systemd_system_unitdir}/*.service
     fi
-    rm -rf ${D}${datadir}/cfengine/modules/packages/zypper
+    rm -rf ${D}${localstatedir}/${BPN}/modules/packages/zypper
 }
 
 RDEPENDS:${PN} += "${BPN}-masterfiles"
+
+FILES:${PN} = "${localstatedir}/${BPN}"
