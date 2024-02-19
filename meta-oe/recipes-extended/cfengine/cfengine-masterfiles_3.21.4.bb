@@ -29,12 +29,13 @@ inherit autotools
 
 export EXPLICIT_VERSION="${PV}"
 
-EXTRA_OECONF = "--prefix=${D}${localstatedir}/cfengine"
+EXTRA_OECONF = "--prefix=${localstatedir}/cfengine"
 
 do_install:append() {
+    install -d ${D}/${localstatedir}/cfengine
     rm -rf ${D}${localstatedir}/cfengine/modules/packages/zypper ${D}${localstatedir}/cfengine/modules/packages/yum
 }
 
-FILES:${PN} = "${localstatedir}/cfengine/masterfiles ${localstatedir}/cfengine/masterfiles/**/*"
+FILES:${PN} = "${localstatedir}/cfengine/masterfiles/**"
 
 RDEPENDS:${PN} += "python3-core"
